@@ -1,0 +1,23 @@
+libs=../../dist/macosx/debug/layout.app/Contents/MacOS
+includes=-I../../dist/include -I../../dist/include/expat \
+-I../../dist/include/nspr -I../../dist/include/jsengine -I..
+
+top=../..
+include $(top)/local.mk
+
+all: layout install
+
+DEBUG=-g
+
+layout: $(libs)/liblayout.dylib main.o
+	g++ -arch $(arch) -fPIC -framework Cocoa -o layout main.o -L$(libs) \
+-llayout -lcocoawidget -ljsengine -lmozjs -lexpat -lnspr4 -lplc4 -lplds4
+
+install: 
+	cp layout $(libs) 
+
+main.o: main.cpp
+	g++ $(DEBUG) $(includes) -Wall -c main.cpp
+
+clean:
+	rm -f *~ layout *.o

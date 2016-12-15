@@ -1,0 +1,322 @@
+#!/bin/sh
+# 
+# Trixul Cross-Platform GUI Toolkit
+# 
+# Copyright (c) 2006, Syd Logan
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without 
+# modification, are permitted provided that the following conditions are met:
+# 
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright notice,
+# * this list of conditions and the following disclaimer in the documentation 
+# and/or other materials provided with the distribution.
+# * Neither the name trixul nor the names of its contributors may be used to
+# endorse or promote products derived from this software without specific prior
+# written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+
+touch local.mk
+platform=`uname`;
+echo "Configure begin";
+if [ ! -d dist ]
+then
+   mkdir dist
+fi
+if [ ! -d dist/include ]
+then
+   mkdir dist/include
+fi
+if [ `echo $platform | grep -i "Linux"` ]
+then
+platform="linux"
+fi
+if [ `echo $platform | grep -i "Darwin"` ]
+then
+platform="macosx"
+fi
+if [ `echo $platform | grep -i "NT"` ]
+then
+platform="windows"
+fi
+echo "Configuring for $platform."
+if [ ! -d dist/$platform ]
+then
+	echo "Creating dist/$platform..."
+	mkdir dist/$platform
+fi
+if [ ! -d dist/$platform/debug ]
+then
+	echo "Creating dist/$platform/debug..."
+	mkdir dist/$platform/debug
+fi
+if [ ! -d dist/$platform/debug/en ]
+then
+	echo "Creating dist/$platform/debug/en..."
+	mkdir dist/$platform/debug/en
+fi
+if [ ! -d dist/$platform/debug/es ]
+then
+	echo "Creating dist/$platform/debug/es..."
+	mkdir dist/$platform/debug/es
+fi
+if [ ! -d dist/$platform/release ]
+then
+	echo "Creating dist/$platform/release..."
+	mkdir dist/$platform/release
+fi
+if [ ! -d dist/$platform/release/en ]
+then
+	echo "Creating dist/$platform/release/en..."
+	mkdir dist/$platform/release/en
+fi
+if [ ! -d dist/$platform/release/es ]
+then
+	echo "Creating dist/$platform/release/es..."
+	mkdir dist/$platform/release/es
+fi
+echo "Copying version header..."
+version=`cut -f 2 -d '"' layout/version.h`
+echo "Configuring version $version of layout."
+cp layout/version.h dist/include
+if [ $platform = "macosx" ]
+then
+echo "platform=macosx" > local.mk
+echo "Creating release structure..."
+if [ ! -d dist/$platform/debug/layout.app ]
+then
+    mkdir dist/$platform/debug/layout.app
+fi
+if [ ! -d dist/$platform/release/layout.app ]
+then
+    mkdir dist/$platform/release/layout.app
+fi
+if [ ! -d dist/$platform/debug/layout.app/Contents ]
+then
+    mkdir dist/$platform/debug/layout.app/Contents
+fi
+if [ ! -d dist/$platform/release/layout.app/Contents ]
+then
+    mkdir dist/$platform/release/layout.app/Contents
+fi
+if [ ! -d dist/$platform/debug/layout.app/Contents/MacOS ]
+then
+    mkdir dist/$platform/debug/layout.app/Contents/MacOS
+fi
+if [ ! -d dist/$platform/release/layout.app/Contents/MacOS ]
+then
+    mkdir dist/$platform/release/layout.app/Contents/MacOS
+fi
+if [ ! -d dist/$platform/debug/layout.app/Contents/Resources ]
+then
+    mkdir dist/$platform/debug/layout.app/Contents/Resources
+fi
+if [ ! -d dist/$platform/release/layout.app/Contents/Resources ]
+then
+    mkdir dist/$platform/release/layout.app/Contents/Resources
+fi
+
+echo "#include <stdlib.h>" > isppc.c
+echo "int main(int argc, char *argv[]) {" >> isppc.c
+echo "#if defined(__POWERPC__)" >> isppc.c
+echo "exit(1);"  >> isppc.c
+echo "#else" >> isppc.c
+echo "exit(0);"  >> isppc.c
+echo "#endif" >> isppc.c
+echo "}" >> isppc.c
+gcc -o isppc isppc.c
+./isppc
+if [ $? -eq 1 ]
+then
+hardware="ppc"
+echo "arch=ppc" >> local.mk 
+echo "Is PPC"
+else
+hardware="intel"
+echo "arch=i386" >> local.mk 
+echo "Is Intel"
+fi
+
+echo "Generating PkgInfo file..."
+echo "APPL????" > dist/$platform/release/layout.app/Contents/PkgInfo
+echo "Copying Info.plist file..."
+sed -e 's/LAYOUT_VERSION/$version/' install/macosx/Info.plist > dist/$platform/release/layout.app/Contents/Info.plist
+echo "Copying desktop icon file..."
+cp install/macosx/layout.icns dist/$platform/release/layout.app/Contents/Resources
+echo "Making release versions of PkgInfo, Info.plist, and desktop icon files..."
+cp dist/$platform/release/layout.app/Contents/Info.plist dist/$platform/debug/layout.app/Contents
+cp dist/$platform/release/layout.app/Contents/PkgInfo dist/$platform/debug/layout.app/Contents
+cp dist/$platform/release/layout.app/Contents/Resources/layout.icns dist/$platform/debug/layout.app/Contents/Resources
+if [ $hardware = "ppc" ]
+then
+echo "Copying debug libs...";
+cp -r libs/nspr4-3/macosx/lib/debug/*.* dist/macosx/debug/layout.app/Contents/MacOS 
+cp -r libs/expat-1.95.6/macosx/lib/debug/*.* dist/macosx/debug/layout.app/Contents/MacOS 
+echo "Copying release libs...";
+cp -r libs/nspr4-3/macosx/lib/release/*.* dist/macosx/release/layout.app/Contents/MacOS 
+cp -r libs/expat-1.95.6/macosx/lib/release/*.* dist/macosx/release/layout.app/Contents/MacOS 
+else
+echo "Copying debug libs...";
+cp -r libs/nspr4-5/macosx/lib/debug/intel/*.* dist/macosx/debug/layout.app/Contents/MacOS 
+cp -r libs/expat-2.0.1/macosx/lib/debug/intel/*.* dist/macosx/debug/layout.app/Contents/MacOS 
+echo "Copying release libs...";
+cp -r libs/nspr4-5/macosx/lib/release/intel/*.* dist/macosx/release/layout.app/Contents/MacOS 
+cp -r libs/expat-2.0.1/macosx/lib/release/intel/*.* dist/macosx/release/layout.app/Contents/MacOS 
+fi
+if [ $hardware = "ppc" ]
+then
+echo "Copying includes...";
+if [ ! -d dist/include/nspr ]
+then
+    mkdir dist/include/nspr
+fi
+cp -r libs/nspr4-3/macosx/include/ dist/include/nspr 
+if [ ! -d dist/include/expat ]
+then
+    mkdir dist/include/expat
+fi
+cp -r libs/expat-1.95.6/macosx/include/expat.h dist/include/expat
+else
+echo "Copying includes...";
+if [ ! -d dist/include/nspr ]
+then
+    mkdir dist/include/nspr
+fi
+cp -r libs/nspr4-5/macosx/include/ dist/include/nspr 
+if [ ! -d dist/include/expat ]
+then
+    mkdir dist/include/expat
+fi
+cp -r libs/expat-2.0.1/macosx/include/expat.h dist/include/expat
+fi
+if [ ! -d dist/include/jsengine ]
+then
+    mkdir dist/include/jsengine
+fi
+if [ ! -d dist/include/boost ]
+then
+   mkdir dist/include/boost
+fi
+cp -r layout/boost/include/*  dist/include/boost
+cp layout/jsengine/include/*.h dist/include/jsengine
+cp layout/jsengine/include/*.tbl dist/include/jsengine
+cp layout/jsengine/jsengine.h dist/include/jsengine
+echo "Copying Makefiles...";
+cd layout/cocoa;
+cp Makefile.macosx Makefile;
+cd ..
+cd jsengine 
+cp Makefile.macosx Makefile
+cd ..
+cd main
+cp Makefile.macosx Makefile
+cd ..
+cp Makefile.macosx Makefile
+else 
+if [ $platform = "linux" ]
+then
+echo "platform=linux" > local.mk
+echo "Copying debug libs...";
+cp -r libs/nspr4-3/linux/lib/debug/*.* dist/linux/debug/
+cp -r libs/expat-1.95.6/linux/lib/debug/*.* dist/linux/debug/
+echo "Copying release libs...";
+cp -r libs/nspr4-3/linux/lib/release/*.* dist/linux/release/
+cp -r libs/expat-1.95.6/linux/lib/release/*.* dist/linux/release/
+echo "Copying includes...";
+if [ ! -d dist/include/boost ]
+then
+   mkdir dist/include/boost
+fi
+cp -r layout/boost/include/*  dist/include/boost
+if [ ! -d dist/include/nspr ]
+then
+    mkdir dist/include/nspr
+fi
+cp -r libs/nspr4-3/linux/include/* dist/include/nspr 
+if [ ! -d dist/include/expat ]
+then
+    mkdir dist/include/expat
+fi
+cp -r libs/expat-1.95.6/linux/include/expat.h dist/include/expat
+if [ ! -d dist/include/jsengine ]
+then
+    mkdir dist/include/jsengine
+fi
+cp layout/jsengine/include/*.h dist/include/jsengine
+cp layout/jsengine/include/*.tbl dist/include/jsengine
+cp layout/jsengine/jsengine.h dist/include/jsengine
+echo "Copying Makefiles...";
+cd layout/gtk;
+cp Makefile.linux Makefile;
+cd ..
+cd jsengine 
+cp Makefile.linux Makefile
+cd ..
+cd main
+cp Makefile.linux Makefile
+cd ..
+cp Makefile.linux Makefile
+else
+if [ $platform = "windows" ]
+then
+echo "platform=windows" > local.mk
+echo "Copying debug libs...";
+cp -r libs/nspr4-3/windows/lib/debug/*.* dist/windows/debug/
+cp dist/windows/debug/libnspr4.dll dist/windows/debug/nspr4.dll
+cp -r libs/expat-1.95.6/windows/lib/debug/*.* dist/windows/debug/
+echo "Copying release libs...";
+cp -r libs/nspr4-3/windows/lib/release/*.* dist/windows/release/
+cp dist/windows/release/libnspr4.dll dist/windows/release/nspr4.dll
+cp -r libs/expat-1.95.6/windows/lib/release/*.* dist/windows/release/
+echo "Copying includes...";
+if [ ! -d dist/include/boost ]
+then
+   mkdir dist/include/boost
+fi
+cp -r layout/boost/include/*  dist/include/boost
+if [ ! -d dist/include/nspr ]
+then
+    mkdir dist/include/nspr
+fi
+cp -r libs/nspr4-3/windows/include/* dist/include/nspr 
+if [ ! -d dist/include/expat ]
+then
+    mkdir dist/include/expat
+fi
+cp -r libs/expat-1.95.6/windows/include/expat.h dist/include/expat
+if [ ! -d dist/include/jsengine ]
+then
+    mkdir dist/include/jsengine
+fi
+cp layout/jsengine/include/*.h dist/include/jsengine
+cp layout/jsengine/include/*.tbl dist/include/jsengine
+cp layout/jsengine/jsengine.h dist/include/jsengine
+echo "Copying Makefiles...";
+cd layout/windows;
+cp Makefile.windows Makefile;
+cd ..
+cd jsengine 
+cp Makefile.windows Makefile
+cd ..
+cd main
+cp Makefile.windows Makefile
+cd ..
+cp Makefile.windows Makefile
+fi
+fi
+fi
+
+echo "Configure done"

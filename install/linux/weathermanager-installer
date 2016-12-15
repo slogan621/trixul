@@ -1,0 +1,89 @@
+#!/bin/sh
+
+# check to see if some of the files we expect actually exist
+
+echo
+if [ ! -d "/usr/local" ]
+then
+    echo "/usr/local missing on this system! Unable to install weathermanager."
+    exit
+fi
+
+# check to see if we are root already. if so, just run the installer
+id=`id --user`
+if [ $id -eq 0 ]
+then
+    isroot=1
+else
+    isroot=0
+fi
+
+echo "Installing weathermanager..."
+if [ $isroot -eq 1 ]
+then
+    installdir="/usr/local/weathermanager"
+    if [ ! -d "/usr/local/weathermanager" ]
+    then
+        mkdir /usr/local/weathermanager
+    fi
+else
+    installdir=`pwd`
+fi
+
+# create the executable
+
+echo "if [ \"\$LD_LIBRARY_PATH\" ]" > weathermanager
+echo "then" >> weathermanager 
+echo "  LD_LIBRARY_PATH=$installdir:\$LD_LIBRARY_PATH" >> weathermanager 
+echo "else" >> weathermanager
+echo "  LD_LIBRARY_PATH=$installdir" >> weathermanager
+echo "fi" >> weathermanager
+echo "export LD_LIBRARY_PATH" >> weathermanager
+echo "WEATHERMANAGERPROGRAM=\"$installdir/feedwx\"" >> weathermanager
+echo "exec \$WEATHERMANAGERPROGRAM 2>/dev/null >/dev/null" >> weathermanager
+
+if [ -d $installdir ]
+then
+    if [ ! -d /tmp/feedwx ]
+    then
+    mkdir /tmp/feedwx
+    fi
+    cp feedwx.tar.gz /tmp/feedwx
+    pushd `pwd` > /dev/null
+    cd /tmp/feedwx
+    tar -zxvf feedwx.tar.gz 
+    cp *.so* feedwx $installdir 
+    ln -s libfeed.so.1.0.0 $installdir/libfeed.so.1
+    ln -s libfeed.so.1.0.0 $installdir/libfeed.so
+    ln -s libwx_gtk-2.4.so.0.1.1 $installdir/libwx_gtk-2.4.so.0
+    ln -s libwx_gtk-2.4.so.0.1.1 $installdir/libwx_gtk-2.4.so
+    rm *
+    popd
+    rmdir /tmp/feedwx
+
+    # copy the weathermanager script to its home
+
+    chmod 755 weathermanager
+    if [ $isroot -eq 1 ]
+    then
+        # integrate into bluecurve
+        cp weathermanager /usr/local/bin
+        cp weathermanager.desktop /usr/share/applications
+        cp feed.png /usr/share/pixmaps/weathermanager.png
+        ln -s /usr/share/pixmaps/weathermanager.png /usr/share/icons/Bluecurve/48x48/apps/weathermanager.png 
+    else
+        cp weathermanager $installdir
+    fi
+fi
+if [ -f $installdir"/feedwx" ]
+then
+    echo "weather manager installation was successful!"
+    if [ $isroot -eq 1 ]
+    then
+        echo "make sure that /usr/local/bin is in your PATH."
+    else
+        echo "make sure that "$installdir" is in your PATH."
+    fi
+else
+    echo "There was a problem installing weathermanager."
+fi

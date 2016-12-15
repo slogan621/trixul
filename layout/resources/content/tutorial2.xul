@@ -1,0 +1,15 @@
+<window name="main" title="Trixul Hello World" main="true" width="250" height="100">
+    <script type="text/javascript" src="resources/content/tutorial2.js"/>
+    <spacer/>
+    <box orient="horizontal">
+        <spacer/>
+        <statictext id="mytext" string="Hello World!" width="100" height="20"/>
+        <spacer/>
+    </box>
+    <spacer/>
+    <box orient="horizontal">
+        <spacer/>
+        <button label="Dismiss" onclick="DismissHandler();"/>
+        <spacer/>
+    </box>
+</window>

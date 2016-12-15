@@ -1,0 +1,18 @@
+<component name="encrypt" id="79463AD7-02C3-42FD-A8F0-061525C45FF8">
+    <class name="AESEncrypt" id="6F2AD801-85A4-4FF4-A0F3-42B013ED2C8E">
+        <function name="SetKey">
+            <arg name="Key" type="string"/>
+            <return type="PRStatus"/>
+        </function>
+        <function name="Encrypt">
+            <arg name="Plaintext" type="string"/>
+            <return type="string"/>
+        </function>
+        <function name="Decrypt">
+            <arg name="Ciphertext" type="string"/>
+            <return type="string"/>
+        </function>
+        <property name="key" type="string"/>
+    </class>
+</component>
+

@@ -1,0 +1,18 @@
+<component name="simple" id="94981D9E-FC99-11D9-8BDE-F66BAD1E3F3A">
+    <class name="HelloClass" id="2ABDF00B-025E-11DA-BFFE-000A27942344">
+        <function name="Hello">
+            <arg name="MyName" type="string"/>
+            <return type="PRInt32"/>
+        </function>
+        <property name="age" type="PRInt32"/>
+    </class>
+    <class name="HelloClass2" id="36BDB860-025E-11DA-981A-000A27942344">
+        <function name="Hello">
+            <arg name="MyName" type="string"/>
+            <return type="PRInt32"/>
+        </function>
+        <property name="age" type="PRInt32"/>
+    </class>
+</component>
+
+<!-- string, number, bool -->

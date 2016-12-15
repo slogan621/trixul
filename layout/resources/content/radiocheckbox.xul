@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+
+<!--
+Trixul Cross-Platform GUI Toolkit
+
+Copyright (c) 2006, Syd Logan
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without 
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright notice,
+* this list of conditions and the following disclaimer in the documentation 
+and/or other materials provided with the distribution.
+* Neither the name trixul nor the names of its contributors may be used to
+endorse or promote products derived from this software without specific prior
+written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+
+<window name="main" title="Radio Button Test" main="true" width="600" height="300" x="100" y="100" position="center, mouse">
+    <script type="text/javascript" src="resources/content/radiocheckbox.js"/>
+    <spacer/>
+    <box orient="vertical">
+        <spacer/>
+        <checkbox label="Check Item 1" id="CheckItem1" checked="true"/>
+        <spacer/>
+        <checkbox label="Check Item 2" id="CheckItem2" checked="false"/>
+        <spacer/>
+        <checkbox label="Check Item 3" id="CheckItem3" checked="true"/>
+        <spacer/>
+        <checkbox label="Check Item 4" id="CheckItem4" checked="false"/>
+        <spacer/>
+    </box>
+    <spacer/>
+    <box orient="horizontal">
+        <spacer/>
+        <checkbox label="Check Item 5" id="CheckItem5" checked="true"/>
+        <spacer/>
+        <checkbox label="Check Item 6" id="CheckItem6" checked="false"/>
+        <spacer/>
+        <checkbox label="Check Item 7" id="CheckItem7" checked="true"/>
+        <spacer/>
+        <checkbox label="Check Item 8" id="CheckItem8" checked="false"/>
+        <spacer/>
+    </box>
+    <spacer/>
+    <box orient="vertical">
+        <spacer/>
+        <radiobutton group="radiogroup1" label="Radio Button 1" id="RadioButton1" checked="true"/>
+        <spacer/>
+        <radiobutton group="radiogroup1" label="Radio Button 2" id="RadioButton2"/>
+        <spacer/>
+        <radiobutton group="radiogroup1" label="Radio Button 3" id="RadioButton3"/>
+        <spacer/>
+        <radiobutton group="radiogroup1" label="Radio Button 4" id="RadioButton4"/>
+        <spacer/>
+    </box>
+    <spacer/>
+    <box orient="horizontal">
+        <spacer/>
+        <radiobutton group="radiogroup2" label="Radio Button 5" id="RadioButton5" checked="true"/>
+        <spacer/>
+        <radiobutton group="radiogroup2" label="Radio Button 6" id="RadioButton6"/>
+        <spacer/>
+        <radiobutton group="radiogroup2" label="Radio Button 7" id="RadioButton7"/>
+        <spacer/>
+        <radiobutton group="radiogroup2" label="Radio Button 8" id="RadioButton8"/>
+        <spacer/>
+    </box>
+    <spacer/>
+    <box orient="horizontal">
+        <spacer/>
+        <button label="ToggleCheckItem" onclick="return ToggleCheckItem();"/>
+        <button label="SetNextRadio" onclick="return SetNextRadio();"/>
+    </box>
+</window>

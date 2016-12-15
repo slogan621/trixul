@@ -1,0 +1,15 @@
+<window name="main" title="Trixul Hello World" main="true" width="250" height="100">
+    <script type="text/javascript" src="resources/content/tutorial.js"/>
+    <spacer/>
+    <box orient="horizontal">
+        <spacer/>
+        <text id="mytext" editable="true" selectable="true" string="Hello World!" width="100" height="20" />
+        <spacer/>
+    </box>
+    <spacer/>
+    <box orient="horizontal">
+        <spacer/>
+        <button label="Click Here" onclick="ClickHereHandler();"/>
+        <spacer/>
+    </box>
+</window>

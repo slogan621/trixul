@@ -1,0 +1,12 @@
+flags=" /GS /Zi /EHsc -c -DXP_WIN"
+
+cl $flags -I../dist/include -I../dist/include/expat -I../dist/include/nspr -I../dist/include/jsengine simple.cpp
+
+cl $flags -I../dist/include -I../dist/include/expat -I../dist/include/nspr -I../dist/include/jsengine simple_proxy.cpp
+
+link /NODEFAULTLIB:MSVCP71D /NODEFAULTLIB:MSVCRTD /DEBUG /NOLOGO /DLL /OUT:simple.dll simple.obj simple_proxy.obj ../dist/windows/debug/libjsengine.lib \
+../dist/windows/debug/js3250.lib
+lib /NOLOGO /OUT:simple.lib simple.obj simple_proxy.obj
+
+cp simple.dll ../dist/windows/debug/components
+cp simple.lib ../dist/windows/debug/components

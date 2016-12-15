@@ -1,0 +1,160 @@
+# 
+# Trixul Cross-Platform GUI Toolkit
+# 
+# Copyright (c) 2006, Syd Logan
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without 
+# modification, are permitted provided that the following conditions are met:
+# 
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright notice,
+# * this list of conditions and the following disclaimer in the documentation 
+# and/or other materials provided with the distribution.
+# * Neither the name trixul nor the names of its contributors may be used to
+# endorse or promote products derived from this software without specific prior
+# written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# 
+
+includes=-I../../dist/include/nspr -I../ -I. -I../jsengine -I../jsengine/include
+libs=../../dist/windows/debug/
+
+CFLAGS=/Od /D "WIN32" /D "_WINDLL" /FD /GR /EHa /GS /W3 /nologo /c /Zi /TP /clr:oldsyntax /LD \
+/FU "C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\mscorlib.dll" \
+/FU "C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.Data.dll" \
+/FU "C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.Windows.Forms.dll" \
+/FU "C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.XML.dll" \
+/FU "C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.Drawing.dll" \
+/FU "C:\WINDOWS\Microsoft.NET\Framework\v2.0.50727\System.dll" -D "XP_WIN"
+
+all: libwindowswidget.dll
+
+# link line courtesy of http://support.microsoft.com/?id=814472
+
+libwindowswidget.dll: windowsfactory.obj windowsbuttonimpl.obj \
+windowswindowimpl.obj windowsappimpl.obj windowstextimpl.obj \
+windowsstatictextimpl.obj windowswidgetimpl.obj buttonpresssubject.obj \
+windowresizesubject.obj windowraisesubject.obj widgetimpl.obj \
+windowsscrolledwindowimpl.obj windowsscrolledviewimpl.obj \
+windowsmenuimpl.obj windowsmenuitemimpl.obj windowsmenubarimpl.obj \
+menuitemclicksubject.obj windowsopenpickerimpl.obj windowssaveaspickerimpl.obj \
+windowsgridlistimpl.obj windowscheckboximpl.obj windowsradiobuttonimpl.obj \
+radiogroupmanager.obj clipboardhelper.obj
+
+	link /INCREMENTAL /NOLOGO /DLL /MANIFEST \
+/DEBUG /ASSEMBLYDEBUG  /MACHINE:X86 \
+/FIXED:No /ERRORREPORT:PROMPT /OUT:libwindowswidget.dll   \
+windowsfactory.obj windowsbuttonimpl.obj windowswindowimpl.obj \
+windowsappimpl.obj windowstextimpl.obj windowsstatictextimpl.obj \
+windowswidgetimpl.obj windowresizesubject.obj buttonpresssubject.obj \
+windowraisesubject.obj widgetimpl.obj windowsmenuimpl.obj \
+windowsmenuitemimpl.obj windowsmenubarimpl.obj menuitemclicksubject.obj \
+windowsopenpickerimpl.obj windowssaveaspickerimpl.obj \
+windowsscrolledwindowimpl.obj windowsscrolledviewimpl.obj \
+windowsgridlistimpl.obj windowscheckboximpl.obj windowsradiobuttonimpl.obj \
+radiogroupmanager.obj  clipboardhelper.obj
+
+	lib  /NOLOGO /OUT:libwindowswidget.lib \
+windowsfactory.obj windowsbuttonimpl.obj windowswindowimpl.obj \
+windowsappimpl.obj windowstextimpl.obj windowsstatictextimpl.obj \
+windowswidgetimpl.obj windowresizesubject.obj buttonpresssubject.obj \
+windowraisesubject.obj widgetimpl.obj windowsmenuimpl.obj \
+windowsmenuitemimpl.obj windowsmenubarimpl.obj menuitemclicksubject.obj \
+windowsopenpickerimpl.obj windowssaveaspickerimpl.obj \
+windowsscrolledwindowimpl.obj windowsscrolledviewimpl.obj \
+windowsgridlistimpl.obj windowscheckboximpl.obj windowsradiobuttonimpl.obj \
+radiogroupmanager.obj clipboardhelper.obj
+
+	cp libwindowswidget.dll $(libs) 
+	cp libwindowswidget.dll.manifest $(libs) 
+	cp libwindowswidget.lib $(libs) 
+
+windowsfactory.obj: windowsfactory.cpp windowsfactory.h
+	cl $(CFLAGS) $(includes) windowsfactory.cpp
+
+windowswindowimpl.obj: windowswindowimpl.cpp windowswindowimpl.h
+	cl $(CFLAGS) $(includes) windowswindowimpl.cpp
+
+windowsappimpl.obj: windowsappimpl.cpp windowsappimpl.h
+	cl $(CFLAGS) $(includes) windowsappimpl.cpp
+
+widgetimpl.obj: ../widgetimpl.cpp ../widgetimpl.h
+	cl $(CFLAGS) $(includes) ../widgetimpl.cpp
+
+windowswidgetimpl.obj: windowswidgetimpl.cpp windowswidgetimpl.h
+	cl $(CFLAGS) $(includes) windowswidgetimpl.cpp
+
+windowsgridlistimpl.obj: windowsgridlistimpl.cpp windowsgridlistimpl.h
+	cl $(CFLAGS) $(includes) windowsgridlistimpl.cpp
+
+windowsimpl.obj: windowswidgetimpl.cpp windowswidgetimpl.h
+	cl $(CFLAGS) $(includes) windowswidgetimpl.cpp
+
+windowssaveaspickerimpl.obj: windowssaveaspickerimpl.cpp windowssaveaspickerimpl.h
+	cl $(CFLAGS) $(includes) windowssaveaspickerimpl.cpp
+
+windowsopenpickerimpl.obj: windowsopenpickerimpl.cpp windowsopenpickerimpl.h
+	cl $(CFLAGS) $(includes) windowsopenpickerimpl.cpp
+
+windowsbuttonimpl.obj: windowsbuttonimpl.cpp windowsbuttonimpl.h
+	cl $(CFLAGS) $(includes) windowsbuttonimpl.cpp
+
+windowscheckboximpl.obj: windowscheckboximpl.cpp windowscheckboximpl.h
+	cl $(CFLAGS) $(includes) windowscheckboximpl.cpp
+
+windowsradiobuttonimpl.obj: windowsradiobuttonimpl.cpp windowsradiobuttonimpl.h
+	cl $(CFLAGS) $(includes) windowsradiobuttonimpl.cpp
+
+radiogroupmanager.obj: ../radiogroupmanager.cpp ../radiogroupmanager.h
+	cl $(CFLAGS) $(includes) ../radiogroupmanager.cpp
+
+windowsscrolledwindowimpl.obj: windowsscrolledwindowimpl.cpp windowsscrolledwindowimpl.h
+	cl $(CFLAGS) $(includes) windowsscrolledwindowimpl.cpp
+
+windowsscrolledviewimpl.obj: windowsscrolledviewimpl.cpp windowsscrolledviewimpl.h
+	cl $(CFLAGS) $(includes) windowsscrolledviewimpl.cpp
+
+windowsmenuimpl.obj: windowsmenuimpl.cpp windowsmenuimpl.h
+	cl $(CFLAGS) $(includes) windowsmenuimpl.cpp
+
+windowsmenuitemimpl.obj: windowsmenuitemimpl.cpp windowsmenuitemimpl.h
+	cl $(CFLAGS) $(includes) windowsmenuitemimpl.cpp
+
+windowsmenubarimpl.obj: windowsmenubarimpl.cpp windowsmenubarimpl.h
+	cl $(CFLAGS) $(includes) windowsmenubarimpl.cpp
+
+windowstextimpl.obj: windowstextimpl.cpp windowstextimpl.h
+	cl $(CFLAGS) $(includes) windowstextimpl.cpp
+
+windowsstatictextimpl.obj: windowsstatictextimpl.cpp windowsstatictextimpl.h
+	cl $(CFLAGS) $(includes) windowsstatictextimpl.cpp
+
+buttonpresssubject.obj: ../buttonpresssubject.cpp ../buttonpresssubject.h
+	cl $(CFLAGS) $(includes) ../buttonpresssubject.cpp
+
+windowresizesubject.obj: ../windowresizesubject.cpp ../windowresizesubject.h
+	cl $(CFLAGS) $(includes) ../windowresizesubject.cpp
+
+windowraisesubject.obj: ../windowraisesubject.cpp ../windowraisesubject.h
+	cl $(CFLAGS) $(includes) ../windowraisesubject.cpp
+
+menuitemclicksubject.obj: ../menuitemclicksubject.cpp ../menuitemclicksubject.h
+	cl $(CFLAGS) $(includes) ../menuitemclicksubject.cpp
+
+clipboardhelper.obj: ../clipboardhelper.cpp ../clipboardhelper.h
+	cl $(CFLAGS) $(includes) ../clipboardhelper.cpp
+
+clean:
+	rm -f *~ *.dll *.lib *.obj 

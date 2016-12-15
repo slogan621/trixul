@@ -1,0 +1,14 @@
+#!/bin/sh 
+clear
+echo "weather manager installer creation script"
+pushd `pwd` > /dev/null
+cd ../../dist/Linux/release
+echo "creating archive..."
+rm -f feedwx.tar.gz
+tar -zcvf feedwx.tar.gz libfeed.so.1.0.0 libwx_gtk-2.4.so.0.1.1 libplc4.so libplds4.so feedwx libexpat.so.0.4.0
+popd
+cp ../../dist/Linux/release/feedwx.tar.gz .
+rm -f weathermanager.tar.gz
+cp ../feed.png .
+tar -zcvf weathermanager.tar.gz README feed.png feedwx.tar.gz install.sh weathermanager-installer weathermanager.desktop
+echo "weather manager installer creation complete"

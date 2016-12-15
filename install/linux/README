@@ -1,0 +1,44 @@
+Installation Instructions for Linux Weather Manager
+---------------------------------------------------
+
+Installation is fairly simple. 
+
+There are two ways to install: as root (recommended, details below), or as a 
+non-root user. You do not need to become root before installing in order to
+install as root (in fact, I recommend that you do not become root), as the 
+installer will prompt you for the root password.
+
+To install as root, simply copy weathermanager.tar.gz to a temporary directory, 
+unpack it, and then type:
+
+$ sh install.sh
+
+You will be prompted for root password. It is recommended you install as root
+since this will make the application available to all users on the system, as 
+well as integrate weather manager into desktops (e.g., GNOME, KDE, and 
+bluecurve on redhat) that conform to the freedesktop.org standards 
+(see http://www.freedesktop.org for more details). As of this writing, I have 
+only tested desktop integration against RedHat 9, but I will have more 
+extensive coverage in the future. The application will be located in the 
+Internet menu, to run it, simply select the Weather Manager menu item. You can 
+also launch weathermanager by typing:
+
+$ weathermanager
+
+in a command window.
+
+If you plan to install for your own use (e.g., not as root), then locate or 
+create a directory accessible to you (e.g., below your HOME directory), copy
+the weathermanager.tar.gz file there, unpack it, and once again, type:
+
+$ install.sh
+
+The software will be installed in the current directory, and no effort will be 
+made to integrate with the desktop. You will also have to set your 
+LD_LIBRARY_PATH to include the current directory so that the runtime loader 
+can find the weathermanager executable. Furthermore, because the application
+is not integrated into the desktop, you can only run from the command line,
+e.g., by typing:
+
+$ weathermanager
+

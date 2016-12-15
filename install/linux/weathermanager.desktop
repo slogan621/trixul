@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Weather Manager
+Comment=Read NOAA XML weather feeds
+Exec=weathermanager
+Icon=weathermanager.png
+Terminal=0
+Type=Application
+Encoding=UTF-8
+Categories=Application;Network;X-Red-Hat-Base;X-Red-Hat-Base-Only;
+StartupWMClass=Weathermanager
+

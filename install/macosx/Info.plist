@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist SYSTEM "file://localhost/System/Library/DTDs/PropertyList.dtd">
+<plist version="0.1">
+<dict>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.sydlogan.layout</string>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>layout</string>
+	<key>CFBundleIconFile</key>
+	<string>layout.icns</string>
+	<key>CFBundleName</key>
+	<string>layout</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>0.1</string>
+	<key>CFBundleShortVersionString</key>
+	<string>0.1</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Layout version LAYOUT_VERSION, (c) 2006 Syd Logan</string>
+	<key>CFBundleLongVersionString</key>
+	<string>LAYOUT_VERSION, (c) 2006 Syd Logan</string>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright 2006 Syd Logan</string>
+	<key>CSResourcesFileMapped</key>
+	<true/>
+</dict>
+</plist>

@@ -1,0 +1,142 @@
+libs=../dist/windows/debug
+includes=-I../dist/include -I../dist/include/expat -I../dist/include/nspr \
+-I../dist/include/jsengine 
+
+all: layout.exe install
+
+DEBUG=/Od /GS /Zi /TP /MTd /EHsc -DXP_WIN /c /nologo /GR
+
+layout.exe: layout.obj attribute.obj element.obj document.obj container.obj \
+widget.obj button.obj text.obj window.obj app.obj variant.obj \
+widgetfactory.obj library.obj strings.obj script.obj componentmgr.obj \
+component.obj attributelist.obj statictext.obj box.obj spacer.obj \
+plbasename.obj plgetcwd.obj menu.obj menuitem.obj menubar.obj filepicker.obj \
+scrolledwindow.obj boxlayout.obj scrolledview.obj \
+gridlist.obj checkbox.obj radiobutton.obj
+	link /INCREMENTAL /ASSEMBLYDEBUG /NOLOGO /DEBUG /FIXED:No \
+/OUT:layout.exe layout.obj attribute.obj element.obj \
+/NODEFAULTLIB:MSVCRT /NODEFAULTLIB:MSVCRTD /NODEFAULTLIB:LIBCMT /NODEFAULTLIB:LIBCMTD /NODEFAULTLIB:LIBC /NODEFAULTLIB:LIBCD\
+document.obj container.obj widget.obj button.obj text.obj variant.obj \
+window.obj widgetfactory.obj app.obj library.obj strings.obj script.obj \
+componentmgr.obj component.obj attributelist.obj statictext.obj box.obj \
+spacer.obj plbasename.obj plgetcwd.obj menu.obj menuitem.obj menubar.obj \
+filepicker.obj scrolledwindow.obj boxlayout.obj scrolledview.obj\
+gridlist.obj checkbox.obj radiobutton.obj \
+$(libs)/libjsengine.lib $(libs)/js3250.lib $(libs)/libexpat.lib \
+$(libs)/libnspr4.lib $(libs)/libplc4.lib $(libs)/libplds4.lib \
+$(libs)/libwindowswidget.lib msvcrtd.lib 
+
+install:
+	cp layout.exe $(libs) 
+	cp -r resources $(libs)
+	cp -r components $(libs)
+	cp run $(libs)
+	cp runspacer $(libs)
+	cp runlist $(libs)
+	cp runradiocheckbox $(libs)
+	cp runscrolledwin $(libs)
+	cp debug $(libs)
+	cp parse $(libs)
+	cp genstubs $(libs)
+
+document.obj: document.cpp document.h
+	cl $(DEBUG) $(includes) -c document.cpp
+
+attributelist.obj: attributelist.cpp attributelist.h
+	cl $(DEBUG) $(includes) -c attributelist.cpp
+
+boxlayout.obj: boxlayout.cpp boxlayout.h
+	cl $(DEBUG) $(includes) -c boxlayout.cpp
+
+variant.obj: variant.cpp variant.h
+	cl $(DEBUG) $(includes) -c variant.cpp
+
+component.obj: component.cpp component.h
+	cl $(DEBUG) $(includes) -c component.cpp
+
+gridlist.obj: gridlist.cpp gridlist.h
+	cl $(DEBUG) $(includes) -c gridlist.cpp
+
+checkbox.obj: checkbox.cpp checkbox.h
+	cl $(DEBUG) $(includes) -c checkbox.cpp
+
+radiobutton.obj: radiobutton.cpp radiobutton.h
+	cl $(DEBUG) $(includes) -c radiobutton.cpp
+
+scrolledwindow.obj: scrolledwindow.cpp scrolledwindow.h
+	cl $(DEBUG) $(includes) -c scrolledwindow.cpp
+
+scrolledview.obj: scrolledview.cpp scrolledview.h
+	cl $(DEBUG) $(includes) -c scrolledview.cpp
+
+plbasename.obj: plbasename.c plbasename.h
+	cl $(DEBUG) $(includes) -c plbasename.c
+
+plgetcwd.obj: plgetcwd.c plgetcwd.h
+	cl $(DEBUG) $(includes) -c plgetcwd.c
+
+componentmgr.obj: componentmgr.cpp componentmgr.h
+	cl $(DEBUG) $(includes) -c componentmgr.cpp
+
+element.obj: element.cpp element.h
+	cl $(DEBUG) $(includes) -c element.cpp
+
+filepicker.obj: filepicker.cpp filepicker.h
+	cl -DHAVE_WIN32 $(DEBUG) $(includes) -c filepicker.cpp
+
+widgetfactory.obj: widgetfactory.cpp widgetfactory.h
+	cl -DHAVE_WIN32 $(DEBUG) $(includes) -c widgetfactory.cpp
+
+script.obj: script.cpp script.h
+	cl $(DEBUG) $(includes) -c script.cpp
+
+widget.obj: widget.cpp widget.h
+	cl $(DEBUG) $(includes) -c widget.cpp
+
+library.obj: library.cpp library.h
+	cl $(DEBUG) $(includes) -c library.cpp
+
+strings.obj: strings.cpp strings.h
+	cl $(DEBUG) $(includes) -c strings.cpp
+
+button.obj: button.cpp button.h
+	cl $(DEBUG) $(includes) -c button.cpp
+
+menu.obj: menu.cpp menu.h
+	cl $(DEBUG) $(includes) -c menu.cpp
+
+menubar.obj: menubar.cpp menubar.h
+	cl $(DEBUG) $(includes) -c menubar.cpp
+
+menuitem.obj: menuitem.cpp menuitem.h
+	cl $(DEBUG) $(includes) -c menuitem.cpp
+
+text.obj: text.cpp text.h
+	cl $(DEBUG) $(includes) -c text.cpp
+
+statictext.obj: statictext.cpp text.h
+	cl $(DEBUG) $(includes) -c statictext.cpp
+
+window.obj: window.cpp window.h
+	cl $(DEBUG) $(includes) -c window.cpp
+
+box.obj: box.cpp box.h
+	cl $(DEBUG) $(includes) -c box.cpp
+
+spacer.obj: spacer.cpp spacer.h
+	cl $(DEBUG) $(includes) -c spacer.cpp
+
+app.obj: app.cpp app.h
+	cl $(DEBUG) $(includes) -c app.cpp
+
+container.obj: container.cpp container.h
+	cl $(DEBUG) $(includes) -c container.cpp
+
+attribute.obj: attribute.cpp attribute.h
+	cl $(DEBUG) $(includes) -c attribute.cpp
+
+layout.obj: layout.cpp layout.h
+	cl $(DEBUG) $(includes) -c layout.cpp
+
+clean:
+	rm -f *~ layout.exe *.obj

@@ -1,0 +1,169 @@
+# 
+# Trixul Cross-Platform GUI Toolkit
+# 
+# Copyright (c) 2006, Syd Logan
+# All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without 
+# modification, # are permitted provided that the following conditions are met:
+# 
+# * Redistributions of source code must retain the above copyright notice, this
+# list of conditions and the following disclaimer.
+# * Redistributions in binary form must reproduce the above copyright notice,
+# * this list of conditions and the following disclaimer in the documentation 
+# and/or other materials provided with the distribution.
+# * Neither the name trixul nor the names of its contributors may be used to
+# endorse or promote products derived from this software without specific prior
+# written permission.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL 
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR 
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER 
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE 
+# USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+# 
+
+libs=../dist/linux/debug/
+includes=-I../dist/include -I../dist/include/expat -I../dist/include/nspr \
+-I../dist/include/jsengine -I.
+
+all: liblayout.so install
+
+DEBUG=-g -DJS_THREADSAFE
+
+liblayout.so: layout.o attribute.o element.o document.o container.o \
+widget.o button.o text.o window.o app.o widgetfactory.o library.o strings.o \
+script.o componentmgr.o component.o attributelist.o statictext.o box.o \
+spacer.o plbasename.o plgetcwd.o menu.o menubar.o menuitem.o filepicker.o \
+widgetimpl.o variant.o scrolledwindow.o boxlayout.o scrolledview.o \
+gridlist.o radiobutton.o checkbox.o control.o 
+	g++ -Wall -shared -fPIC -o liblayout.so layout.o attribute.o element.o \
+variant.o document.o container.o widget.o button.o text.o window.o \
+widgetfactory.o app.o library.o strings.o script.o componentmgr.o component.o \
+attributelist.o statictext.o box.o spacer.o plbasename.o control.o \
+plgetcwd.o menu.o menubar.o menuitem.o filepicker.o widgetimpl.o \
+scrolledwindow.o boxlayout.o scrolledview.o gridlist.o radiobutton.o \
+checkbox.o -L$(libs) -lgtkwidget -ljsengine -lmozjs -lexpat -lnspr4 -lplc4 \
+-lplds4
+
+install:
+	cp liblayout.so $(libs) 
+	cp -r resources $(libs)
+	cp -r components $(libs)
+	cp run* $(libs)
+	cp debug $(libs)
+	cp parse $(libs)
+	cp genstubs $(libs)
+
+document.o: document.cpp document.h
+	g++ $(DEBUG) $(includes) -Wall -c document.cpp
+
+boxlayout.o: boxlayout.cpp boxlayout.h
+	g++ $(DEBUG) $(includes) -Wall -c boxlayout.cpp
+
+attributelist.o: attributelist.cpp attributelist.h
+	g++ $(DEBUG) $(includes) -Wall -c attributelist.cpp
+
+filepicker.o: filepicker.cpp filepicker.h
+	g++ $(DEBUG) $(includes) -Wall -c filepicker.cpp
+
+gridlist.o: gridlist.cpp gridlist.h
+	g++ $(DEBUG) $(includes) -Wall -c gridlist.cpp
+
+radiobutton.o: radiobutton.cpp radiobutton.h
+	g++ $(DEBUG) $(includes) -Wall -c radiobutton.cpp
+
+control.o: control.cpp control.h
+	g++ $(DEBUG) $(includes) -Wall -c control.cpp
+
+checkbox.o: checkbox.cpp checkbox.h
+	g++ $(DEBUG) $(includes) -Wall -c checkbox.cpp
+
+scrolledwindow.o: scrolledwindow.cpp scrolledwindow.h
+	g++ $(DEBUG) $(includes) -Wall -c scrolledwindow.cpp
+
+scrolledview.o: scrolledview.cpp scrolledview.h
+	g++ $(DEBUG) $(includes) -Wall -c scrolledview.cpp
+
+widgetimpl.o: widgetimpl.cpp widgetimpl.h
+	g++ $(DEBUG) $(includes) -Wall -c widgetimpl.cpp
+
+variant.o: variant.cpp variant.h
+	g++ $(DEBUG) $(includes) -Wall -c variant.cpp
+
+component.o: component.cpp component.h
+	g++ $(DEBUG) $(includes) -Wall -c component.cpp
+
+menu.o: menu.cpp menu.h
+	g++ $(DEBUG) $(includes) -Wall -c menu.cpp
+
+menuitem.o: menuitem.cpp menuitem.h
+	g++ $(DEBUG) $(includes) -Wall -c menuitem.cpp
+
+menubar.o: menubar.cpp menubar.h
+	g++ $(DEBUG) $(includes) -Wall -c menubar.cpp
+
+plbasename.o: plbasename.c plbasename.h
+	gcc $(DEBUG) $(includes) -Wall -c plbasename.c
+
+plgetcwd.o: plgetcwd.c plgetcwd.h
+	gcc $(DEBUG) $(includes) -Wall -c plgetcwd.c
+
+componentmgr.o: componentmgr.cpp componentmgr.h
+	g++ $(DEBUG) $(includes) -Wall -c componentmgr.cpp
+
+element.o: element.cpp element.h
+	g++ $(DEBUG) $(includes) -Wall -c element.cpp
+
+widgetfactory.o: widgetfactory.cpp widgetfactory.h
+	g++ -DHAVE_GTK $(DEBUG) $(includes) -Wall -c widgetfactory.cpp
+
+script.o: script.cpp script.h
+	g++ $(DEBUG) $(includes) -Wall -c script.cpp
+
+widget.o: widget.cpp widget.h
+	g++ $(DEBUG) $(includes) -Wall -c widget.cpp
+
+library.o: library.cpp library.h
+	g++ $(DEBUG) $(includes) -Wall -c library.cpp
+
+strings.o: strings.cpp strings.h
+	g++ $(DEBUG) $(includes) -Wall -c strings.cpp
+
+button.o: button.cpp button.h
+	g++ $(DEBUG) $(includes) -Wall -c button.cpp
+
+text.o: text.cpp text.h
+	g++ $(DEBUG) $(includes) -Wall -c text.cpp
+
+statictext.o: statictext.cpp text.h
+	g++ $(DEBUG) $(includes) -Wall -c statictext.cpp
+
+window.o: window.cpp window.h
+	g++ $(DEBUG) $(includes) -Wall -c window.cpp
+
+box.o: box.cpp box.h
+	g++ $(DEBUG) $(includes) -Wall -c box.cpp
+
+spacer.o: spacer.cpp spacer.h
+	g++ $(DEBUG) $(includes) -Wall -c spacer.cpp
+
+app.o: app.cpp app.h
+	g++ $(DEBUG) $(includes) -Wall -c app.cpp
+
+container.o: container.cpp container.h
+	g++ $(DEBUG) $(includes) -Wall -c container.cpp
+
+attribute.o: attribute.cpp attribute.h
+	g++ $(DEBUG) $(includes) -Wall -c attribute.cpp
+
+layout.o: layout.cpp layout.h
+	g++ $(DEBUG) $(includes) -Wall -c layout.cpp
+
+clean:
+	rm -f *~ liblayout.so *.o

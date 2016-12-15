@@ -1,0 +1,20 @@
+libs=../../dist/linux/debug/
+includes=-I../../dist/include -I../../dist/include/expat \
+-I../../dist/include/nspr -I../../dist/include/jsengine -I..
+
+all: layout install
+
+DEBUG=-g
+
+layout: $(libs)/liblayout.so main.o
+	g++ $(DEBUG) -o layout main.o -L$(libs) -llayout \
+-lgtkwidget -ljsengine -lmozjs -lexpat -lnspr4 -lplc4 -lplds4
+
+install: 
+	cp layout $(libs) 
+
+main.o: main.cpp
+	g++ $(DEBUG) $(includes) -Wall -c main.cpp
+
+clean:
+	rm -f *~ layout *.o
